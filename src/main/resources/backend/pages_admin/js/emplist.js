@@ -1,110 +1,108 @@
 new Vue({
-
     el: '#app',
-    data: {
-        currentPage: 1,
-        pageSize: 5,
-        totalCount: 0,
-        pagination: {},
-        dataList: [
-            {
-                username: "张三",
-                isAdmin: 0,
-                phone: "13131313131",
-                email: "12345@qq.com",
-                status: 0,
-            }
-
-        ],//当前页要展示的列表数据
-        formData: {},//表单数据
-        dialogFormVisible: false,//控制表单是否可见
-        dialogFormVisible4Edit: false,//编辑表单是否可见
-        rules: {//校验规则
-            username: [{required: true, message: '用户名为必填项', trigger: 'blur'}],
-        },
-        employee: {
-            id: "",
-            username: "",
-            pwd: "",
-            isAdmin: 0,
-            phone: "",
-            email: "",
-            url: "",
-            status: 0,
+    data() {
+        return {
+            currentPage: 1,
+            pageSize: 5,
+            totalCount: 0,
+            pagination: {},
+            dataList: [
+                {
+                    name: "张三",
+                    username: "zhangsan",
+                    isAdmin: 0,
+                    status: 0,
+                    CreateTime: "2023-7-7"
+                }
+            ],//当前页要展示的列表数据
+            formData: {
+                name: "",
+                username: "",
+                password: "",
+                status: false,
+            },//表单数据
+            dialogFormVisible: false,//控制表单是否可见
+            dialogFormVisible4Edit: false,//编辑表单是否可见
+            rules: {//校验规则
+                username: [{required: true, message: '用户名为必填项', trigger: 'blur'}],
+            },
+            name: "",
         }
     },
-
     //钩子函数，VUE对象初始化完成后自动执行
     created() {
         this.getAll();
     },
-
     methods: {
         //列表
         getAll() {
             axios({
                 method: "post",
-                url: "http://localhost:8080/admin/selectByPageAndCondition?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
-                data: this.user,
+                url: "/admin/page",
+                data: {
+                    currentPage: this.currentPage,
+                    pageSize: this.pageSize,
+                    name: this.name,
+                }
             }).then((res) => {
-                this.dataList = res.data.rows;
-                //设置总记录数
-                this.totalCount = res.data.totalCount;
+                this.dataList = res.data.data.records;
+                this.totalCount = res.data.data.total;
+                console.log(this.totalCount)
             })
 
         },
-
         //弹出添加窗口
         handleCreate() {
             this.dialogFormVisible = true;
             this.resetForm();
         },
-
         //重置表单
         resetForm() {
             this.formData = {};
         },
-
         //添加
         handleAdd() {
+            this.formData.status = this.formData.status ? 1 : 0;
+            // console.log(this.formData.status);
             //发送请求
             axios({
                 method: "POST",
-                url: "http://localhost:8080/admin/add",
+                url: "/admin/add",
                 data: this.formData
             }).then((res) => {
-                if (res.data == "userHadExist") {
-                    this.$message.error("添加失败，用户名已存在");
-                } else if (res.data == "success") {
+                if (res.data.code == 1) {
+                    //添加成功
                     this.$message.success("添加成功");
-                    //关闭弹窗
+                    //关闭窗口
                     this.dialogFormVisible = false;
+                } else {
+                    //添加失败
+                    this.$message.success(res.data.msg);
                 }
+
             }).finally(() => {
                 this.getAll();
             })
         },
-
         //弹出编辑窗口
         handleUpdate(row) {
             //根据id查询数据
             axios({
                 method: "get",
-                url: "http://localhost:8080/admin/selectById?id=" + row.id,
-                data: this.formData,
+                url: "/admin/selectById?id=" + row.id,
             }).then((res) => {
-                this.formData = res.data;
+                this.formData = res.data.data;
                 this.dialogFormVisible4Edit = true;
             })
 
         },
-
         //编辑
         handleEdit() {
+            this.formData.status = this.formData.status ? 1 : 0;
             //发送请求
             axios({
                 method: "post",
-                url: "http://localhost:8080/admin/update",
+                url: "/admin/update",
                 data: this.formData
             }).then((res) => {
                 //弹窗
@@ -126,9 +124,13 @@ new Vue({
                 //根据id查询数据
                 axios({
                     method: "post",
-                    url: "http://localhost:8080/admin/delete?id=" + row.id,
+                    url: "/admin/delete?id=" + row.id,
                 }).then((res) => {
-                    this.$message.success("删除成功")
+                    if (res.data.code == 1) {
+                        this.$message.success(res.data.msg);
+                    } else {
+                        this.$message.error(res.data.msg);
+                    }
                 }).finally(() => {
                     this.getAll();
                 });

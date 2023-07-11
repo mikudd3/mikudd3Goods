@@ -31,21 +31,16 @@ public class LoginCheckFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-
         //1.获取本次请求的URL
         String url = request.getRequestURI();
-
         log.info("请求地址:{}", url);
-
         //定义放行数组
         String[] uris = new String[]{
                 "/admin/login",
                 "/backend/**",
         };
-
         //2.判断本次请求是否需要处理
         boolean check = check(uris, url);
-
         log.info("结果判断：{}", check);
         //3.如果不需要处理
         if (check) {
@@ -54,7 +49,6 @@ public class LoginCheckFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
-
         //4.判断用户登录状态，
         if (request.getSession().getAttribute("emp") != null) {
             log.info("用户已登录");
@@ -90,7 +84,6 @@ public class LoginCheckFilter implements Filter {
             if (match) {
                 return match;
             }
-//            return true;
         }
         return false;
     }

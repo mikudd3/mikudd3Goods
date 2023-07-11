@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Stock {
-    private Integer id;
+    private Long id;
     private String goodsId;
     private String code;
 

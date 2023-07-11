@@ -19,29 +19,13 @@ new Vue({
             }).then(resp => {
                 if(resp.data.code == 1){
                     //登录成功
-                    location.href="main.html"
+                    location.href="main.html";
+                    localStorage.setItem('emp', resp.data.data);
                 }else {
+                    console.log(resp)
                     this.$message.error(resp.data.msg)
                 }
             })
-
-
-            /*axios.post("http://localhost:8080/login", "username=" + this.employee.username + "&password=" + this.employee.password)
-                .then(resp => {
-                    // alert("这是then")
-                    console.log(resp.data)
-                    if (resp.data == 1) {
-                        location.href = '../pages_admin/admin/main.html';
-                    } else if (resp.data == 2) {
-                        location.href = '../index.html';
-                    } else if (resp.data == 0) {
-                        this.$message.error("登录失败");
-                    }
-                }).catch(function () {
-                // alert("这是catch")
-            }).finally(function () {
-                // alert("这是finally")
-            })*/
         },
 
     },

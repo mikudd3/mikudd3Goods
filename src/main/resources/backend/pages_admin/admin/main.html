@@ -39,7 +39,7 @@
                     <el-image src="../../image/tx.jpg" class="header-img"></el-image>
                 </div>
                 <div class="text">
-                    <p>欢迎您，管理员</p>
+                    <p>欢迎您，{{name}}</p>
                 </div>
                 <p class="manger">管理员中心</p>
             </el-container>
@@ -104,7 +104,13 @@
     new Vue({
         el: "#div",
         data: {
-            iframeSrc: "manager.html"
+            iframeSrc: "manager.html",
+            name:"管理员",
+        },
+        mounted(){
+            let emp = localStorage.getItem("emp");
+            console.log(emp)
+            this.name = emp.username;
         },
         methods: {
             findemp() {

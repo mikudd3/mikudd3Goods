@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Goods {
     //主键
-    private Integer id;
+    private Long id;
     //商品名字
     private String name;
     //价格

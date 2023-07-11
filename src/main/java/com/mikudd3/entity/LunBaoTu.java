@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class LunBaoTu {
 
-    private Integer id;
+    private Long id;
     private String url;
     private String title;
     private String color;

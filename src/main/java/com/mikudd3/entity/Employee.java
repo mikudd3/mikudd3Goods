@@ -18,7 +18,8 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class Employee {
     //员工id
-    private Integer id;
+//    @TableField(value = "id")
+    private Long id;
     //用户名
     private String username;
     private String name;
@@ -27,8 +28,9 @@ public class Employee {
     //是否为管理员，1是管理员，0是员工
     private Integer isAdmin;
     //账号状态
+
     private Integer status;
-    @TableField(fill = FieldFill.INSERT,value = "createTime")//插入时填充
+    @TableField(fill = FieldFill.INSERT, value = "createTime")//插入时填充
     //注册时间
     private LocalDateTime createTime;
 
