@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- 页面meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>订单</title>
+</head>
+<body>
+<div id="app">
+    <div class="app-container">
+        <div class="box">
+            <el-table size="small" current-row-key="id" :data="dataList" stripe highlight-current-row>
+                <el-table-column type="index" align="center" label="序号"></el-table-column>
+                <el-table-column prop="numbers" label="订单号" align="center"></el-table-column>
+                <el-table-column prop="username" label="用户名" align="center"></el-table-column>
+                <el-table-column prop="phone" label="电话" align="center"></el-table-column>
+                <el-table-column prop="goodsName" label="商品名" align="center"></el-table-column>
+                <el-table-column prop="goodsCode" label="商品代码" align="center"></el-table-column>
+                <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+            </el-table>
+        </div>
+    </div>
+    <!--分页工具条-->
+    <div class="block">
+        <el-pagination
+                @size-change="handleSizeChange"
+                @current-change="handleCurrentChange"
+                :current-page="currentPage"
+                :page-sizes="[5, 10, 15, 20]"
+                :page-size="pageSize"
+                layout="total, sizes, prev, pager, next, jumper"
+                :total="totalCount">
+        </el-pagination>
+    </div>
+</div>
+</body>
+<!-- 引入组件库 -->
+<script src="../js/vue.js"></script>
+<link rel="stylesheet" href="../plugins/element-ui/lib/theme-chalk/index.css">
+<script src="../plugins/element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="../css/style.css">
+<script src="../js/axios-0.18.0.js"></script>
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            currentPage: 1,
+            pageSize: 5,
+            totalCount: 0,
+            dataList: [
+                {
+                    numbers: "13141234134123",
+                    username: "张三",
+                    phone: "13131313131",
+                    goodsName: "无主之地3",
+                    goodsCode: "jhdjkuhjjnbhjh",
+                    createTime: "2023-7-8"
+                }
+
+            ],//当前页要展示的列表数据
+        },
+
+        //钩子函数，VUE对象初始化完成后自动执行
+        created() {
+            this.getAll();
+        },
+        methods: {
+            //列表
+            getAll() {
+                axios({
+                    method: "post",
+                    url: "http://localhost:8080/admin/selectByPageAndCondition?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
+                    data: this.user,
+                }).then((res) => {
+                    this.dataList = res.data.rows;
+                    //设置总记录数
+                    this.totalCount = res.data.totalCount;
+                })
+
+            },
+        }
+    })
+</script>
+</html>

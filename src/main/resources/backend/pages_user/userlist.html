@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>个人介绍</title>
+    <style>
+        body {
+            background-image: url("../image/user.jpg");
+            background-size: cover;
+        }
+
+        div.transbox {
+            width: 850px;
+            height: 620px;
+            margin: 90px auto;
+            background-color: #ffffff;
+            border: 1px solid #FFFFFF;
+            opacity: 0.8;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        img {
+            height: 150px;
+            width: 150px;
+            margin-left: 9cm;
+        }
+
+        h2.ex1 {
+            margin-left: 6cm;
+        }
+
+        #btn {
+            margin-top: 50px;
+            margin-left: 8cm;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="background">
+        <div class="transbox">
+            <h1>个人资料</h1>
+            <img src="../image/tx.jpg"/>
+            <h2 class="ex1">用户名： mikudd3</h2>
+            <h2 class="ex1">性别：男</h2>
+            <h2 class="ex1">电话：13123456789</h2>
+            <h2 class="ex1">邮箱：12345@qq.com</h2>
+            <h2 class="ex1">注册时间： 2023-1-1</h2>
+            <div id="btn">
+                <el-row>
+                    <el-button type="primary" @click="handleUpdate()">修改</el-button>
+                    <el-button type="danger" @click="handleDelete()">注销</el-button>
+                </el-row>
+            </div>
+        </div>
+    </div>
+    <!--    修改-->
+    <div class="add-form">
+        <el-dialog title="编辑检查项" :visible.sync="dialogFormVisible4Edit">
+            <el-form ref="dataEditForm" :model="formData" label-position="right"
+                     label-width="100px">
+                <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="用户名" prop="username">
+                            <el-input v-model="formData.username"/>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="密码" prop="password">
+                            <el-input v-model="formData.password"/>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="电话" prop="phone">
+                            <el-input v-model="formData.phone"/>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="12">
+                        <el-form-item label="邮箱">
+                            <el-input v-model="formData.email" type="email"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="dialogFormVisible4Edit = false">取消</el-button>
+                <el-button type="primary" @click="handleEdit()">确定</el-button>
+            </div>
+        </el-dialog>
+    </div>
+</div>
+
+<script src="../js/vue.js"></script>
+<link rel="stylesheet" href="../plugins/element-ui/lib/theme-chalk/index.css">
+<script src="../plugins/element-ui/lib/index.js"></script>
+<script src="../js/axios-0.18.0.js"></script>
+
+<script>
+    new Vue({
+        el: '#app',
+        data: {
+            dialogFormVisible4Edit: false,
+            formData: {}
+        },
+        methods: {
+            handleEdit() {
+
+            },
+            select() {
+
+            },
+            handleUpdate() {
+                this.dialogFormVisible4Edit = true;
+                //回显数据
+                this.select();
+            },
+            handleDelete() {
+                this.$confirm("此操作将注销账号，是否继续？", "提示", {
+                    type: "info"
+                }).then(() => {
+
+                })
+            }
+        }
+    })
+</script>
+
+</body>
+</html>
+

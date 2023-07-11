@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>折扣</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/list.css">
+
+</head>
+<body>
+<div id="header">
+    <div>
+        <img src="image/logo.png">
+        <span id="right">
+             <a href="index.html" >首页</a>
+                <a href="hotliat.html">热销</a>
+				<a href="goodlist.html">好评如潮</a>
+				<a href="#" class="active">折扣</a>
+                <input type="text" placeholder="搜索" id="ipu" @click="search()">
+                <a href="login.html">登录</a>
+				<a href="register.html">注册</a>
+                <img src="./image/tx.jpg" id="tx">
+        </span>
+    </div>
+</div>
+<div id="main">
+    <ul>
+        <li v-for="product in products">
+            <img :src="product.imgSrc">
+            <span class="r">
+                    <p>{{product.name }}</p>
+                    <p>{{ product.price }}</p>
+                </span>
+        </li>
+    </ul>
+</div>
+
+
+<script src="js/vue.js"></script>
+<script>
+    new Vue({
+        el: "#main",
+        data: {
+            products: [
+                {
+                    imgSrc: "uploads/1.jpg",
+                    name: "无主之地3",
+                    price: "88$"
+                },
+                {
+                    imgSrc: "uploads/1.jpg",
+                    name: "无主之地3",
+                    price: "88$"
+                }
+            ]
+        }
+    });
+</script>
+</body>
+</html>

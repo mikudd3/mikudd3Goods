@@ -1,0 +1,204 @@
+@import url(base.css);
+
+body {
+    background-color: #F9F9F9;
+}
+
+#header {
+    background-color: whitesmoke;
+    height: 120px;
+}
+
+
+#header > div {
+    width: 1200px;
+    padding: 10px 0;
+    margin: auto;
+}
+
+#header > div > img {
+    width: 330px;
+}
+
+#header #tx {
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+    margin-top: 10px;
+    border-radius: 50%;
+    border: 1px solid black;
+    float: right;
+}
+
+#header #ipu {
+    width: 250px;
+    height: 40px;
+    margin: 0 10px 0 40px;
+    border-radius: 10px;
+    text-indent: 10px;
+}
+
+#header a {
+    margin: 15px;
+    font-size: 18px;
+    color: black;
+}
+
+.active,
+a:hover {
+    margin-top: 5px;
+    border-bottom: 2px solid #00a4ff;
+}
+
+#header a:hover {
+    color: skyblue;
+}
+
+
+#main {
+    width: 1200px;
+    margin: auto;
+}
+
+#m1 > span > a:hover {
+    color: skyblue;
+}
+
+#m2 {
+    height: 600px;
+    background-color: rgb(245, 245, 245);
+}
+
+.type .title {
+    padding: 20px 0;
+}
+
+.title span {
+    font-size: 30px;
+}
+
+.title a {
+    float: right;
+    font-size: 15px;
+    color: black;
+}
+
+.title a:hover {
+    color: red;
+}
+
+.content {
+    background-color: #EEF9F4;
+}
+
+.content td > a {
+    width: 99%;
+    height: 350px;
+    background-color: white;
+    display: inline-block;
+    border-radius: 10px;
+    margin: 5px 0;
+}
+
+.content td > a:hover {
+    opacity: 0.8;
+    /* 透明效果，取值 0~1，0全透明，1不透明 */
+    color: red;
+}
+
+.content td > a > img {
+    width: 240px;
+    height: 260px;
+    padding: 20px;
+}
+
+.content td > a > img ~ div {
+    text-align: center;
+}
+
+#footer {
+    padding: 10px;
+    background-color: black;
+    color: gray;
+    text-align: center;
+    font-size: 15px;
+}
+
+
+.slider {
+    width: 1200px;
+    height: 600px;
+    overflow: hidden;
+}
+
+.slider-wrapper {
+    width: 100%;
+    height: 520px;
+}
+
+.slider-wrapper img {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.slider-footer {
+    height: 80px;
+    background-color: rgb(100, 67, 68);
+    padding: 12px 12px 0 12px;
+    position: relative;
+}
+
+.slider-footer .toggle {
+    position: absolute;
+    right: 0;
+    top: 12px;
+    display: flex;
+}
+
+.slider-footer .toggle button {
+    margin-right: 12px;
+    width: 28px;
+    height: 28px;
+    appearance: none;
+    border: none;
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.slider-footer .toggle button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.slider-footer p {
+    margin: 0;
+    color: #fff;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.slider-indicator {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.slider-indicator li {
+    width: 8px;
+    height: 8px;
+    margin: 4px;
+    border-radius: 50%;
+    background: #fff;
+    opacity: 0.4;
+    cursor: pointer;
+}
+
+.slider-indicator li.active {
+    width: 12px;
+    height: 12px;
+    opacity: 1;
+}

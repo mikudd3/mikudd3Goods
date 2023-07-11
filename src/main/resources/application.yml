@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: mikudd3
+  datasource:
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/mikudd3?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowPublicKeyRetrieval=true
+      username: root
+      password: 123456
+
+mikudd3:
+  path: E:\Java\code\mikudd3\src\main\resources\image\
