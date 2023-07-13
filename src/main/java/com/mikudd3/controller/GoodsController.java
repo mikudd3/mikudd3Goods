@@ -1,11 +1,17 @@
 package com.mikudd3.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mikudd3.common.R;
 import com.mikudd3.dto.GoodsDto;
+import com.mikudd3.entity.Goods;
 import com.mikudd3.service.GoodsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -64,4 +70,56 @@ public class GoodsController {
         goodsService.removeById(id);
         return R.success("删除成功");
     }
+
+    @GetMapping("/getHot")
+    public R getHot() {
+        Page<Goods> goodsPage = new Page<>(1, 5);
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("total");
+        goodsService.page(goodsPage, wrapper);
+        return R.success(goodsPage);
+    }
+
+    @GetMapping("/getGoodgame")
+    public R getGoodgame() {
+        Page<Goods> goodsPage = new Page<>(1, 5);
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("pj");
+        goodsService.page(goodsPage, wrapper);
+        return R.success(goodsPage);
+    }
+
+    @GetMapping("/getDazhegame")
+    public R getDazhegame() {
+        Page<Goods> goodsPage = new Page<>(1, 5);
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("currentprice");
+        goodsService.page(goodsPage, wrapper);
+        return R.success(goodsPage);
+    }
+
+    @GetMapping("/getHotlist")
+    public R getHotList() {
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("total");
+        List<Goods> list = goodsService.list(wrapper);
+        return R.success(list);
+    }
+
+    @GetMapping("/getGoodgamelist")
+    public R getGoodgameList() {
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("pj");
+        List<Goods> list = goodsService.list(wrapper);
+        return R.success(list);
+    }
+
+    @GetMapping("/getDazhegamelist")
+    public R getDazhegameList() {
+        QueryWrapper<Goods> wrapper = new QueryWrapper<>();
+        wrapper.orderByAsc("currentprice");
+        List<Goods> list = goodsService.list(wrapper);
+        return R.success(list);
+    }
+
 }

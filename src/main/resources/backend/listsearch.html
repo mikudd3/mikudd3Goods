@@ -10,7 +10,7 @@
     <div>
         <img src="image/logo.png">
         <span id="right">
-             <a href="index.html" >首页</a>
+             <a href="index.html">首页</a>
                 <a href="#" class="active">热销</a>
 				<a href="goodlist.html">好评如潮</a>
 				<a href="dazhelist.html">折扣</a>
@@ -24,7 +24,7 @@
 <div id="main">
     <ul>
         <li v-for="product in products">
-            <img :src="product.imgSrc">
+            <img :src="product.image">
             <span class="r">
                     <p>{{product.name }}</p>
                     <p>{{ product.price }}</p>
@@ -39,16 +39,32 @@
         data: {
             products: [
                 {
-                    imgSrc: "uploads/1.jpg",
+                    image: "uploads/1.jpg",
                     name: "无主之地3",
                     price: "88$"
                 },
                 {
-                    imgSrc: "uploads/1.jpg",
+                    image: "uploads/1.jpg",
                     name: "无主之地3",
                     price: "88$"
                 }
-            ]
+            ],
+
+
+        },
+        created() {
+            this.getAll();
+        },
+        methods: {
+            getAll() {
+                axios({
+                    method: "get",
+                    url: "/goods/getBySerach"
+                }).then(resp => {
+                    let r = resp.data;
+                    this.products = r.data.records;
+                })
+            }
         }
     });
 </script>

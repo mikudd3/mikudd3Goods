@@ -33,22 +33,37 @@
     </ul>
 </div>
 <script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
 <script>
     new Vue({
         el: "#main",
         data: {
             products: [
                 {
-                    imgSrc: "uploads/1.jpg",
+                    image: "uploads/1.jpg",
                     name: "无主之地3",
                     price: "88$"
                 },
                 {
-                    imgSrc: "uploads/1.jpg",
+                    image: "uploads/1.jpg",
                     name: "无主之地3",
                     price: "88$"
                 }
             ]
+        },
+        created() {
+            this.getAll();
+        },
+        methods: {
+            getAll() {
+                axios({
+                    method: "get",
+                    url: "/goods/getHotlist"
+                }).then(resp => {
+                    let r = resp.data;
+                    this.products = r.data;
+                })
+            }
         }
     });
 </script>

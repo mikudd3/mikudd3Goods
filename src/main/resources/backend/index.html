@@ -51,10 +51,10 @@
         <div class="content" id="hotgame">
             <table>
                 <tr>
-                    <td v-for="game in games" :key="game.id">
-                        <a :href="game.link">
+                    <td v-for="(game,index) in games" :key="index">
+                        <a href="#">
                             <img :src="game.image" alt="">
-                            <div>{{game.title}}</div>
+                            <div>{{game.name}}</div>
                             <div>{{game.price}}</div>
                         </a>
                     </td>
@@ -70,10 +70,10 @@
         <div class="content" id="goodgame">
             <table>
                 <tr>
-                    <td v-for="game in games" :key="game.id">
-                        <a :href="game.link">
+                    <td v-for="(game,index) in games" :key="index">
+                        <a href="#">
                             <img :src="game.image" alt="">
-                            <div>{{game.title}}</div>
+                            <div>{{game.name}}</div>
                             <div>{{game.price}}</div>
                         </a>
                     </td>
@@ -89,10 +89,10 @@
         <div class="content" id="dazhegame">
             <table>
                 <tr>
-                    <td v-for="game in games" :key="game.id">
-                        <a :href="game.link">
+                    <td v-for="(game,index) in games" :key="index">
+                        <a href="#">
                             <img :src="game.image" alt="">
-                            <div>{{game.title}}</div>
+                            <div>{{game.name}}</div>
                             <div>{{game.price}}</div>
                         </a>
                     </td>
@@ -106,6 +106,7 @@
 </div>
 
 <script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
 <script src="js/lbao.js"></script>
 <script src="js/index.js"></script>
 </body>

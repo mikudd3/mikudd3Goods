@@ -6,6 +6,7 @@ import com.mikudd3.service.LunBaoTuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -42,4 +43,9 @@ public class LunBaoTuController {
         return R.success("修改成功");
     }
 
+    @GetMapping("/getAll")
+    public R getAll() {
+        List<LunBaoTu> list = lunBaoTuService.list();
+        return R.success(list);
+    }
 }

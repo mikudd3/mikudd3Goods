@@ -10,8 +10,8 @@
     <div>
         <img src="image/logo.png">
         <span id="right">
-                <a href="index.html" >首页</a>
-                <a href="hotliat.html" >热销</a>
+                <a href="index.html">首页</a>
+                <a href="hotliat.html">热销</a>
 				<a href="#" class="active">好评如潮</a>
 				<a href="dazhelist.html">折扣</a>
                 <input type="text" placeholder="搜索" id="ipu" @click="search()">
@@ -33,6 +33,7 @@
     </ul>
 </div>
 <script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
 <script>
     new Vue({
         el: "#main",
@@ -49,6 +50,20 @@
                     price: "88$"
                 }
             ]
+        },
+        created() {
+            this.getAll();
+        },
+        methods: {
+            getAll() {
+                axios({
+                    method: "get",
+                    url: "/goods/getGoodgamelist"
+                }).then(resp => {
+                    let r = resp.data;
+                    this.products = r.data;
+                })
+            }
         }
     });
 </script>

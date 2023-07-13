@@ -37,6 +37,7 @@
 
 
 <script src="js/vue.js"></script>
+<script src="js/axios-0.18.0.js"></script>
 <script>
     new Vue({
         el: "#main",
@@ -47,11 +48,6 @@
                     name: "无主之地3",
                     price: "88$"
                 },
-                {
-                    image: "uploads/1.jpg",
-                    name: "无主之地3",
-                    price: "88$"
-                }
             ]
         },
         created() {
@@ -61,10 +57,10 @@
             getAll() {
                 axios({
                     method: "get",
-                    url: "/goods/getdazhe"
+                    url: "/goods/getDazhegamelist"
                 }).then(resp => {
                     let r = resp.data;
-                    this.products = r.data.records;
+                    this.products = r.data;
                 })
             }
         }
