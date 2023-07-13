@@ -10,6 +10,7 @@ import com.mikudd3.entity.Goods;
 import com.mikudd3.entity.Stock;
 import com.mikudd3.mapper.StockMapper;
 import com.mikudd3.service.GoodsService;
+import com.mikudd3.service.StockDtoService;
 import com.mikudd3.service.StockService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -29,6 +30,8 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock> implements
 
     @Autowired
     private GoodsService goodsService;
+    @Autowired
+    private StockDtoService stockDtoService;
 
     /**
      * 分页查询
@@ -41,44 +44,9 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock> implements
     @Override
     public R getPage(String goodsName, Integer currentPage, Integer pageSize) {
         Page<StockDto> stockDtoPage = new Page<>(currentPage, pageSize);
-        //1.创建等值条件,先根据输入的商品名查询商品的信息
-        List<Goods> goods = null;
-        if (StringUtils.isNotEmpty(goodsName)) {
-            LambdaQueryWrapper<Goods> wrapper = new LambdaQueryWrapper<>();
-            wrapper.like(Goods::getName, goodsName);
-            goods = goodsService.list(wrapper);
-        }
-        //2.根据查询到的商品，获取商品的id
-        List<Long> ids = null;
-        if (goods != null) {
-            for (Goods good : goods) {
-                ids.add(good.getId());
-            }
-        }
-        //3.根据获取到的id构造查询条件
-        LambdaQueryWrapper<Stock> queryWrapper = new LambdaQueryWrapper<>();
-        if (ids != null) {
-            queryWrapper.in(Stock::getGoodsId, ids);
-        }
-        //进行分页查询
-        Page<Stock> page = new Page<>(currentPage, pageSize);
-        this.page(page, queryWrapper);
-        //将stock分页后数据放入到stockDto中
-        List<Stock> records = page.getRecords();
-        //将page里面的内容拷贝到stockDtoPage，除了records属性
-        BeanUtils.copyProperties(page, stockDtoPage, "records");
-        List<StockDto> stockDtoList = new ArrayList<>();
-
-        for (Stock stock : records) {
-            LambdaQueryWrapper<Goods> wrapper = new LambdaQueryWrapper<>();
-            wrapper.eq(Goods::getId, stock.getGoodsId());
-            Goods one = goodsService.getOne(wrapper);
-            StockDto stockDto = new StockDto(stock.getId(), one.getName(), stock.getCode());
-            stockDtoList.add(stockDto);
-        }
-        //将集合放入到stockDtoPage中
-        stockDtoPage.setRecords(stockDtoList);
-
+        LambdaQueryWrapper<StockDto> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNotEmpty(goodsName), StockDto::getGoodsName, goodsName);
+        stockDtoService.page(stockDtoPage, wrapper);
         return R.success(stockDtoPage);
     }
 
@@ -93,7 +61,17 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock> implements
         if (goods == null) {
             return R.error("该商品不存在，请先添加商品");
         }
-        return null;
+        //如果商品存在，则将其添加到数据库
+        Stock stock = new Stock();
+        stock.setCode(stockDto.getCdk());
+        stock.setGoodsId(goods.getId());
+        //添加到数据库
+        this.save(stock);
+        //商品数量加一
+        Integer num = goods.getNumber() + 1;
+        goods.setNumber(num);
+        goodsService.save(goods);
+        return R.success("添加成功");
     }
 
     @Override
@@ -124,5 +102,21 @@ public class StockServiceImpl extends ServiceImpl<StockMapper, Stock> implements
         //更新数据库信息
         this.updateById(stock);
         return R.success("修改成功");
+    }
+
+    @Override
+    public R removeWithGoods(Long id) {
+        //根据id查询库存
+        Stock stock = this.getById(id);
+        //根据goods_id查询goods
+        Goods goods = goodsService.getById(stock.getGoodsId());
+        //商品数量减一
+        Integer number = goods.getNumber();
+        goods.setNumber(number - 1);
+        //保存商品
+        goodsService.save(goods);
+        //删除库存
+        this.removeById(id);
+        return null;
     }
 }

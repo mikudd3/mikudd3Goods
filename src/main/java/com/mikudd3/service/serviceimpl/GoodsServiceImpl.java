@@ -12,6 +12,7 @@ import com.mikudd3.entity.Goods;
 import com.mikudd3.entity.Stock;
 import com.mikudd3.mapper.GoodsMapper;
 import com.mikudd3.service.CategoryService;
+import com.mikudd3.service.GoodsDtoService;
 import com.mikudd3.service.GoodsService;
 import com.mikudd3.service.StockService;
 import org.apache.commons.lang.StringUtils;
@@ -33,6 +34,8 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private GoodsDtoService goodsDtoService;
 
     /**
      * 分页查询
@@ -44,32 +47,10 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
      */
     @Override
     public R getPage(String name, Integer currentPage, Integer pageSize) {
-        Page<Goods> goodsPage = new Page<>(currentPage, pageSize);
-        //1.根据商品名查询数据库
-        LambdaQueryWrapper<Goods> wrapper = new LambdaQueryWrapper<>();
-        //创建等值条件
-        wrapper.like(StringUtils.isNotEmpty(name), Goods::getName, name);
-        //进行查询数据
-        this.page(goodsPage, wrapper);
-        //创建goodsDtoPage
         Page<GoodsDto> goodsDtoPage = new Page<>(currentPage, pageSize);
-        //2.copy除了records以外的所有属性
-        BeanUtils.copyProperties(goodsPage, goodsDtoPage, "records");
-        //3.获取goods集合
-        List<Goods> records = goodsPage.getRecords();
-        List<GoodsDto> dtoList = new ArrayList<>();
-        for (Goods goods : records) {
-            //根据goods里面的分类id查询分类名
-            LambdaQueryWrapper<Category> queryWrapper = new LambdaQueryWrapper<>();
-            queryWrapper.eq(Category::getId, goods.getCategoryId());
-            Category category = categoryService.getOne(queryWrapper);
-            //构造goodsDto对象
-            GoodsDto goodsDto = getGoodsDto(goods, category);
-            //加入集合
-            dtoList.add(goodsDto);
-        }
-        //放入goodsDtoPage
-        goodsDtoPage.setRecords(dtoList);
+        LambdaQueryWrapper<GoodsDto> wrapper = new LambdaQueryWrapper<>();
+        wrapper.like(StringUtils.isNotEmpty(name), GoodsDto::getName, name);
+        goodsDtoService.page(goodsDtoPage, wrapper);
         //返回page对象
         return R.success(goodsDtoPage);
     }
@@ -133,6 +114,7 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         goods.setCurrentPrice(goodsDto.getCurrentPrice());
         goods.setImage(goodsDto.getImage());
         goods.setCategoryId(category.getId());
+        goods.setDescription(goodsDto.getDescription());
         goods.setNumber(goodsDto.getNumber());
         goods.setPj(goodsDto.getPj());
         goods.setTotal(goodsDto.getTotal());

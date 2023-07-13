@@ -42,4 +42,11 @@ public interface StockService extends IService<Stock> {
      */
     R updatewithGoods(StockDto stockDto);
 
+    /**
+     * 删除库存
+     *
+     * @param id
+     * @return
+     */
+    R removeWithGoods(Long id);
 }

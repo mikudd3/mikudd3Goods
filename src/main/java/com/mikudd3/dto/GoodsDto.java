@@ -1,5 +1,7 @@
 package com.mikudd3.dto;
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@TableName("goodsDto")
 public class GoodsDto {
 
     //主键
@@ -22,12 +25,14 @@ public class GoodsDto {
     //价格
     private Double price;
     //售价
+    @TableField("currentPrice")
     private Double currentPrice;
     //图片
     private String image;
     //商品描述
     private String description;
     //类别名
+    @TableField("categoryName")
     private String categoryName;
     //库存数量
     private Integer number;

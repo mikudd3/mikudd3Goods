@@ -1,4 +1,4 @@
-package com.mikudd3.entity;
+package com.mikudd3.dto;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
@@ -10,23 +10,28 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * @project: 订单
+ * @project:
  * @author: mikudd3
  * @version: 1.0
  */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@TableName("orders")
-public class Orders {
+@TableName("ordersDto")
+public class OrdersDto {
+    //订单主键
     private Long id;
-    @TableField(fill = FieldFill.INSERT)//插入时填充
+    //订单号
     private String numbers;
-    //库存id
-    private Long stockId;
-    //用户id
-    private Long userId;
-    @TableField(fill = FieldFill.INSERT,value = "createTime")//插入时填充
+    //商品名字
+    @TableField("goodsName")
+    private String goodsName;
+    //cdk
+    @TableField("stockCode")
+    private String stockCode;
+    //用户名
+    @TableField("userName")
+    private String userName;
+    @TableField("createTime")
     private LocalDateTime createTime;
 }
