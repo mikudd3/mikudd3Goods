@@ -43,12 +43,12 @@
     <div class="background">
         <div class="transbox">
             <h1>个人资料</h1>
-            <img src="../image/tx.jpg"/>
-            <h2 class="ex1">用户名： mikudd3</h2>
-            <h2 class="ex1">性别：男</h2>
-            <h2 class="ex1">电话：13123456789</h2>
-            <h2 class="ex1">邮箱：12345@qq.com</h2>
-            <h2 class="ex1">注册时间： 2023-1-1</h2>
+            <img :src="user.image"/>
+            <h2 class="ex1">用户名： {{user.username}}</h2>
+            <h2 class="ex1">性别：{{user.sex}}</h2>
+            <h2 class="ex1">电话：{{user.phone}}</h2>
+            <h2 class="ex1">邮箱：{{user.email}}</h2>
+            <h2 class="ex1">注册时间：{{user.createTime}}</h2>
             <div id="btn">
                 <el-row>
                     <el-button type="primary" @click="handleUpdate()">修改</el-button>
@@ -62,6 +62,14 @@
         <el-dialog title="编辑检查项" :visible.sync="dialogFormVisible4Edit">
             <el-form ref="dataEditForm" :model="formData" label-position="right"
                      label-width="100px">
+                <el-form-item label="头像:" prop="avatar" class="uploadImg">
+                    <el-upload class="avatar-uploader" action="/common/upload" :show-file-list="false"
+                               :on-success="handleAvatarSuccess" :on-change="onChange" ref="upload">
+                        <img v-if="user.image" :src="user.image" class="avatar"
+                             style="width: 70px; height: 70px; margin-left: 10px"/>
+                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
+                </el-form-item>
                 <el-row>
                     <el-col :span="12">
                         <el-form-item label="用户名" prop="username">
@@ -109,14 +117,53 @@
         el: '#app',
         data: {
             dialogFormVisible4Edit: false,
-            formData: {}
+            formData: {},
+            user: {
+                id: 0,
+                username: "",
+                sex: "",
+                phone: "",
+                email: "",
+                createTime: "",
+                image: "../image/tx.jpg"
+            }
+        },
+        mounted() {
+            this.getUser();
         },
         methods: {
+            handleAvatarSuccess(response) {
+                this.user.image = `/common/download?name=${response.data}`
+            },
+            getUser() {
+                axios({
+                    url: "/user/getUser",
+                    method: "get",
+                }).then(resp => {
+                    if (resp.data.code == 1) {
+                        this.user = resp.data.data
+                        console.log(this.image)
+                    } else {
+                        this.$message.error(resp.data.msg);
+                    }
+                })
+            },
             handleEdit() {
-
+                axios({
+                    method: "post",
+                    url: "/user/update",
+                    data: this.formData
+                }).then((res) => {
+                    //弹窗
+                    this.$message.success("修改成功")
+                    //操作成功，关闭窗口
+                    this.dialogFormVisible4Edit = false;
+                }).finally(() => {
+                    this.getAll();
+                })
             },
             select() {
-
+                this.formData = this.user;
             },
             handleUpdate() {
                 this.dialogFormVisible4Edit = true;
@@ -127,7 +174,17 @@
                 this.$confirm("此操作将注销账号，是否继续？", "提示", {
                     type: "info"
                 }).then(() => {
-
+                    axios({
+                        method: "delete",
+                        url: "/user/zhuxiao?id=" + this.user.id,
+                    }).then((res) => {
+                        if (res.data.code == 1) {
+                            this.$message.success(res.data.msg);
+                        } else {
+                            this.$message.error(res.data.msg);
+                        }
+                    })
+                    location.href = "main.html";
                 })
             }
         }

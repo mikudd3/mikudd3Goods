@@ -1,14 +1,19 @@
 package com.mikudd3.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mikudd3.common.R;
+import com.mikudd3.dto.UserWithOrders;
 import com.mikudd3.entity.request.UserRequest;
 import com.mikudd3.entity.User;
 import com.mikudd3.service.UserService;
+import com.mikudd3.service.UserWithOrdersService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 /**
  * @project: 用户controller
@@ -23,6 +28,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserWithOrdersService userWithOrdersService;
 
 
     @PostMapping("/login")
@@ -97,5 +104,41 @@ public class UserController {
         return userService.delete(id);
     }
 
+    /**
+     * 从session中找对象
+     *
+     * @param request
+     * @return
+     */
+    @GetMapping("/getUser")
+    public R getUser(HttpServletRequest request) {
+        Long id = (Long) request.getSession().getAttribute("user");
+        if (id == null) {
+            return R.error("你还没有登录，请登录");
+        }
+        log.info("所登录的账号的id为：{}", id);
+        //根据id查询数据
+        User user = userService.getById(id);
+        return R.success(user);
+    }
 
+
+    @DeleteMapping("/zhuxiao")
+    public R zhuXiao(@RequestParam("id") Long id) {
+        userService.removeById(id);
+        return R.success("注销成功");
+    }
+
+    @PostMapping("/getUserOrders")
+    public R getUserOrders(@RequestBody Map<String, Object> map) {
+        String username = (String) map.get("username");
+        Integer currentPage = (Integer) map.get("currentPage");
+        Integer pageSize = (Integer) map.get("pageSize");
+        //根据用户名查询订单数量
+        Page<UserWithOrders> page = new Page<>(currentPage, pageSize);
+        LambdaQueryWrapper<UserWithOrders> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(UserWithOrders::getUsername, username);
+        userWithOrdersService.page(page, wrapper);
+        return R.success(page);
+    }
 }

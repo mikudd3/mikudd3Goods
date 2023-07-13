@@ -50,7 +50,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             return R.error("密码不正确");
         }
         //如果密码正确，则将用户的id放置到session域中
-        request.getSession().setAttribute("user", user.getId());
+        request.getSession().setAttribute("user", u.getId());
         return R.success(user);
     }
 

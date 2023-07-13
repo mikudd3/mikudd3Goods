@@ -16,7 +16,7 @@
                 <el-table-column prop="username" label="用户名" align="center"></el-table-column>
                 <el-table-column prop="phone" label="电话" align="center"></el-table-column>
                 <el-table-column prop="goodsName" label="商品名" align="center"></el-table-column>
-                <el-table-column prop="goodsCode" label="商品代码" align="center"></el-table-column>
+                <el-table-column prop="code" label="商品代码" align="center"></el-table-column>
                 <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
             </el-table>
         </div>
@@ -48,34 +48,41 @@
             currentPage: 1,
             pageSize: 5,
             totalCount: 0,
-            dataList: [
-                {
-                    numbers: "13141234134123",
-                    username: "张三",
-                    phone: "13131313131",
-                    goodsName: "无主之地3",
-                    goodsCode: "jhdjkuhjjnbhjh",
-                    createTime: "2023-7-8"
-                }
-
-            ],//当前页要展示的列表数据
+            dataList: [],//当前页要展示的列表数据
+            username: ""
         },
-
         //钩子函数，VUE对象初始化完成后自动执行
         created() {
-            this.getAll();
+            this.getUser();
         },
         methods: {
+            getUser() {
+                axios({
+                    url: "/user/getUser",
+                    method: "get",
+                }).then(resp => {
+                    if (resp.data.code == 1) {
+                        this.username = resp.data.data.username
+                    } else {
+                        this.$message.error(resp.data.msg);
+                    }
+                    this.getAll();
+                })
+            },
             //列表
             getAll() {
                 axios({
                     method: "post",
-                    url: "http://localhost:8080/admin/selectByPageAndCondition?currentPage=" + this.currentPage + "&pageSize=" + this.pageSize,
-                    data: this.user,
+                    url: "/user/getUserOrders",
+                    data: {
+                        username: this.username,
+                        currentPage: this.currentPage,
+                        pageSize: this.pageSize
+                    }
                 }).then((res) => {
-                    this.dataList = res.data.rows;
+                    this.dataList = res.data.data.records;
                     //设置总记录数
-                    this.totalCount = res.data.totalCount;
+                    this.totalCount = res.data.total;
                 })
 
             },

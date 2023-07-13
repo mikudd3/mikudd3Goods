@@ -15,6 +15,13 @@
             font-size: 24px;
             color: whitesmoke;
         }
+
+        .el-header a {
+            text-decoration: none;
+            font-size: 24px;
+            color: white;
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
@@ -23,7 +30,9 @@
         <!-- 头部 -->
         <el-header class="el-header" height="100px">
             <el-container>
+                <a href="../index.html">主页</a>
                 <p class="manger">个人中心</p>
+                <a href="../login.html">登录</a>
             </el-container>
         </el-header>
 
@@ -62,7 +71,7 @@
             getmessage() {
                 this.iframeSrc = "userlist.html"
             },
-            getorders(){
+            getorders() {
                 this.iframeSrc = "orderslist.html"
             },
         }

@@ -20,7 +20,7 @@
                 <input type="text" placeholder="搜索" id="ipu" @click="search()">
                 <a href="login.html">登录</a>
 				<a href="register.html">注册</a>
-                <img src="./image/tx.jpg" id="tx">
+                <img :src="image" id="tx" @click="toUser()">
         </span>
     </div>
 </div>
@@ -109,6 +109,35 @@
 <script src="js/axios-0.18.0.js"></script>
 <script src="js/lbao.js"></script>
 <script src="js/index.js"></script>
+
+<script>
+    new Vue({
+        el: "#tx",
+        data() {
+            return {
+                image: "./image/tx.jpg",
+            }
+        },
+        mounted() {
+            this.getUser();
+        },
+        methods: {
+            getUser() {
+                axios({
+                    url: "/user/getUser",
+                    method: "get",
+                }).then(resp => {
+                    let user = resp.data.data;
+                    this.image = user.image;
+                    console.log(this.image)
+                })
+            },
+            toUser() {
+                location.href = "pages_user/main.html"
+            }
+        }
+    })
+</script>
 </body>
 
 </html>
