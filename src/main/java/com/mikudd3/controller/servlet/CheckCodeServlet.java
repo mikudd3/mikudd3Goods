@@ -1,4 +1,4 @@
-package com.mikudd3.controller;
+package com.mikudd3.controller.servlet;
 
 
 import com.mikudd3.service.UserService;

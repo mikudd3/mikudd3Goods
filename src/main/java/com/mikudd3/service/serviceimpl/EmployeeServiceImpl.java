@@ -69,11 +69,10 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
         //创建等值条件
         LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
         //构造等值条件
-        queryWrapper.eq(StringUtils.isNotEmpty(name), Employee::getName, name);
+        queryWrapper.like(StringUtils.isNotEmpty(name), Employee::getName, name);
         //进行查询
-        Page<Employee> employeePage = this.page(page, queryWrapper);
-        log.info(employeePage.toString());
-        return R.success(employeePage);
+        this.page(page, queryWrapper);
+        return R.success(page);
     }
 
     /**

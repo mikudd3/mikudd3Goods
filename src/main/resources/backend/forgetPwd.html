@@ -19,7 +19,7 @@
                 <input type="password" placeholder="再次输入密码" id="password2" v-model="password2">
                 <div class="checkC">
                     <input type="text" placeholder="验证码" id="checkCode" v-model="checkCode">
-                    <img src="" id="checkImg">
+                    <img :src="imgCode" id="checkImg">
                     <a href="#" id="changeImg" @click="changeImg()">看不清？</a>
                 </div>
                 <input type="button" id="btn" @click="forgetPwd()" value="登录">

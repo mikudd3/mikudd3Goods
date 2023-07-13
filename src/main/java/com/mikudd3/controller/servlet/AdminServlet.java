@@ -1,4 +1,4 @@
-package com.mikudd3.controller;
+package com.mikudd3.controller.servlet;
 
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;

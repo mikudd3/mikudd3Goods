@@ -3,13 +3,13 @@ new Vue({
     data() {
         return {
             checkCode: "",
-            employee: {
+            user: {
                 username: "",
-                pwd: "",
+                password: "",
                 phone: "",
                 email: "",
             },
-            imgCode: "/checkCode?" + new Date().getMilliseconds()
+            imgCode: "/checkCode/code?" + new Date().getMilliseconds()
         }
     },
     methods: {
@@ -17,7 +17,7 @@ new Vue({
             if (!this.user.username) {
                 alert("账号不能为空");
                 return false;
-            } else if (!this.user.pwd) {
+            } else if (!this.user.password) {
                 alert("密码不能为空");
                 return false;
             } else if (!this.user.phone) {
@@ -37,27 +37,28 @@ new Vue({
             if (this.validateForm()) {
                 axios({
                     method: "post",
-                    url: "http://localhost:8080/register?checkCode=" + this.checkCode,
-                    data: this.user,
+                    url: "/user/register",
+                    data: {
+                        user: this.user,
+                        checkCode: this.checkCode,
+                    },
                 }).then(resp => {
-                    //如果注册成功
-                    if (resp.data == "success") {
-                        location.href = "../login.html";
-                    } else if (resp.data == "usernameHad") {
-                        this.$message.error("注册失败,该用户已存在")
-                    } else if (resp.data == "codeFail") {
-                        this.$message.error("验证码错误")
+                    resp = resp.data;
+                    if (resp.code == 1) {
+                        //表示注册成功,则跳转到登录页面
+                        this.$message.success("注册成功");
+                        location.href = "login.html";
+                    } else {
+                        this.$message.error(resp.msg);
                     }
-
                 }).catch(function () {
                     alert("这是catch")
                 })
 
             }
         },
-
         changeImg() {
-            this.imgCode = "/checkCode?" + new Date().getMilliseconds();
+            this.imgCode = "/checkCode/code?" + new Date().getMilliseconds();
         }
 
     }

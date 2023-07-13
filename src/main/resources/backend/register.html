@@ -14,13 +14,13 @@
         <img src="image/logo.png" alt="">
         <div class="register">
             <form action="" method="post">
-                <input type="text" placeholder="账号" id="username" v-model="employee.username">
-                <input type="password" placeholder="密码" id="password" v-model="employee.pwd">
-                <input type="text" placeholder="电话号码" id="phone" v-model="employee.phone">
-                <input type="email" placeholder="邮箱" id="email" v-model="employee.email">
+                <input type="text" placeholder="账号" id="username" v-model="user.username">
+                <input type="password" placeholder="密码" id="password" v-model="user.password">
+                <input type="text" placeholder="电话号码" id="phone" v-model="user.phone">
+                <input type="email" placeholder="邮箱" id="email" v-model="user.email">
                 <div class="checkC">
                     <input type="text" placeholder="验证码" id="checkCode" v-model="checkCode">
-                    <img src="" id="checkImg">
+                    <img :src="imgCode" id="checkImg">
                     <a id="changeImg" @click="changeImg()">看不清？</a>
                 </div>
                 <input type="button" id="btn" @click="dosubmit()" value="注册">
@@ -35,6 +35,8 @@
 
 
 <script src="js/vue.js"></script>
+<script src="plugins/element-ui/lib/index.js"></script>
+<link href="plugins/element-ui/lib/theme-chalk/index.css">
 <script src="js/axios-0.18.0.js"></script>
 <script src="js/register.js"></script>
 </body>

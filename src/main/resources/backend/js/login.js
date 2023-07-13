@@ -1,7 +1,7 @@
 new Vue({
     el: "#app",
     data: {
-        employee: {
+        user: {
             username: "",
             password: "",
         },
@@ -9,7 +9,25 @@ new Vue({
     },
     methods: {
         dosubmit() {
-            axios.post("http://localhost:8080/login", "username=" + this.user.username + "&password=" + this.user.password)
+            axios({
+                url: "/user/login",
+                method: "post",
+                data: this.user
+            }).then(resp => {
+                let r = resp.data;
+                console.log(r)
+                if (r.code == 1) {
+                    //登录成功
+                    location.href = "index.html";
+                    localStorage.setItem('user', r.data.id);
+                } else {
+                    console.log(resp)
+                    this.$message.error(r.msg)
+                }
+            })
+
+
+            /*axios.post("/login", "username=" + this.user.username + "&password=" + this.user.password)
                 .then(resp => {
                     // alert("这是then")
                     console.log(resp.data)
@@ -24,7 +42,7 @@ new Vue({
                 // alert("这是catch")
             }).finally(function () {
                 // alert("这是finally")
-            })
+            })*/
         },
 
     },
