@@ -60,6 +60,11 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         sqw.eq(Stock::getGoodsId, goods.getId());
         //进行查询
         List<Stock> list = stockService.list(sqw);
+        //如果已经没有库存
+        if (list.isEmpty()) {
+            return R.error("添加失败，该商品库存为空");
+        }
+        //如果还有库存
         Stock stock = list.get(0);
         //3.根据用户名查询用户
         LambdaQueryWrapper<User> uqw = new LambdaQueryWrapper<>();
@@ -68,8 +73,9 @@ public class OrdersServiceImpl extends ServiceImpl<OrdersMapper, Orders> impleme
         User user = userService.getOne(uqw);
         //4.封装orders对象
         Orders orders = new Orders();
-        orders.setStockId(stock.getId());
         orders.setUserId(user.getId());
+        orders.setGoodsId(goods.getId());
+        orders.setStockCode(stock.getCode());
         //5.保存到数据库
         this.save(orders);
         //删除库存

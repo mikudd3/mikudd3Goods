@@ -2,7 +2,6 @@ package com.mikudd3.controller;
 
 import com.mikudd3.common.R;
 import com.mikudd3.dto.OrdersDto;
-import com.mikudd3.dto.StockDto;
 import com.mikudd3.service.OrdersService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

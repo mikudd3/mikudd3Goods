@@ -23,10 +23,13 @@ public class Orders {
     private Long id;
     @TableField(fill = FieldFill.INSERT)//插入时填充
     private String numbers;
-    //库存id
-    private Long stockId;
+    //商品id
+    private Long goodsId;
+    //库存代码
+    @TableField("stockCode")
+    private String stockCode;
     //用户id
     private Long userId;
-    @TableField(fill = FieldFill.INSERT,value = "createTime")//插入时填充
+    @TableField(fill = FieldFill.INSERT, value = "createTime")//插入时填充
     private LocalDateTime createTime;
 }
