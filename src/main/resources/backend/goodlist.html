@@ -17,7 +17,7 @@
                 <input type="text" placeholder="搜索" id="ipu" @click="search()">
                 <a href="login.html">登录</a>
 				<a href="register.html">注册</a>
-                <img src="./image/tx.jpg" id="tx">
+                 <img :src="image" id="tx">
         </span>
     </div>
 </div>
@@ -49,10 +49,14 @@
                     name: "无主之地3",
                     price: "88$"
                 }
-            ]
+            ],
+            image:"./image/tx.jpg",
         },
         created() {
             this.getAll();
+        },
+        mounted(){
+            this.getUser();
         },
         methods: {
             getAll() {
@@ -63,7 +67,17 @@
                     let r = resp.data;
                     this.products = r.data;
                 })
-            }
+            },
+            getUser() {
+                axios({
+                    url: "/user/getUser",
+                    method: "get",
+                }).then(resp => {
+                    let user = resp.data.data;
+                    this.image = user.image;
+                    console.log(this.image)
+                })
+            },
         }
     });
 </script>
